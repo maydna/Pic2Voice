@@ -4,4 +4,4 @@ This web application aims to convert image to a voice message that describe the 
 (Working in progress...)
 
 Preview of the UI:
-![alt text](./public/preview.png)
+![alt text](./preview.png)
