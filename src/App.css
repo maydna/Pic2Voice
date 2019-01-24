@@ -13,12 +13,30 @@
   grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
 }
 
+.voicebox {
+  display: grid;
+  grid-template-rows: 2fr;
+}
+
 .box {
   border: 2px solid #fff;
   padding-bottom: 10px;
   padding-top: 10px;
   padding-left: 20px;
   padding-right: 20px;
+}
+.box img {
+  width: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.footer {
+  border: 2px solid #fff;
+  padding-bottom: 10px;
+  padding-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .lowerBox {
@@ -55,7 +73,7 @@
   padding-right: 2px;
 }
 
-.buttons {
-  padding-top: 2px;
-  padding-left: 2px;
+.pad2 {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
 }

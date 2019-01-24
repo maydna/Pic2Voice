@@ -10,6 +10,7 @@ import WordDisplay from './components/WordDisplay/WordDisplay';
 import VoiceDisplay from './components/VoiceDisplay/VoiceDisplay';
 import SignIn from './components/SignIn/SignIn';
 import SignUp from './components/SignUp/SignUp';
+import Footer from './components/Footer/Footer';
 import 'semantic-ui-css/semantic.min.css';
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   route: 'signin',
   isSignedIn: false,
   keywords:[],
+  audioURL:'',
   user: {
     id:'',
     name:'',
@@ -46,37 +48,57 @@ class App extends Component {
   }
 
   onInputChange = (event) => {
-    console.log(event);
     this.setState({input: event.target.value});
   }
 
   onSubmit = () => {
-    console.log('onSubmit');
     this.setState({imageURL: this.state.input });
     //add Image API
-      fetch('http://localhost:3001/analyzeimage', {
+    if(this.state.input!=='')
+      {fetch("https://35.190.55.187/api/analyzeimage", {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          imageURL: this.state.imageURL
+          imageURL: this.state.input
         })
       })
+      .then(response => response.json())
       .then(response => {
-        if (response) {
-          fetch('http://localhost:3001/image', {
-            method: 'put',
+        if (response!=="Error happened when calling the analyzeImage API") {
+          console.log("testing")
+          this.setState({keywords:response})
+          const audioMsg='This image may contain the following elements:'+response.join()
+          fetch("https://35.190.55.187/api/converttoaudio", {
+            method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-              id: this.state.user.id
+              keywords: audioMsg
             })
           })
           .then(response => response.json())
-          .then(count => {
-            this.setState(Object.assign(this.state.user, { entries: count }))
+          .then(mp3 => {
+            this.setState({audioURL:mp3})
           })
-          .catch(console.log)
+          .then(
+            fetch("https://35.190.55.187/api/image", {
+              method: 'put',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                id: this.state.user.id
+              })
+            })
+            .then(response => response.json())
+            .then(count => {
+              this.setState(Object.assign(this.state.user, { entries: count }))
+            })
+            .catch(console.log)
+          )
+       } else {
+         alert('Oops!! Seems it is not a public image or the format is not supported, please try again with other images :)')
+         this.setState({keywords:[]})
+         this.setState({audioURL:''})
        }
-     })
+       })}
   }
   onRouteChange = (route) => {
     if (route === 'signin') {
@@ -84,6 +106,7 @@ class App extends Component {
     }
     this.setState({route: route});
   }
+
   render() {
     return (
       <div className="App">
@@ -118,6 +141,7 @@ class App extends Component {
                 <VoiceDisplay
                   className='VoiceDisplay'
                   imageURL={this.state.imageURL}
+                  audioURL={this.state.audioURL}
                 />
               </div>
             </div>
@@ -136,6 +160,7 @@ class App extends Component {
 
 
         }
+        <Footer />
       </div>
     );
   }
