@@ -55,7 +55,7 @@ class App extends Component {
     this.setState({imageURL: this.state.input });
     //add Image API
     if(this.state.input!=='')
-      {fetch(`${process.env.API_URL}/analyzeimage`, {
+      {fetch("https://stormy-refuge-59928.herokuapp.com/analyzeimage", {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -68,7 +68,7 @@ class App extends Component {
           console.log("testing")
           this.setState({keywords:response})
           const audioMsg='This image may contain the following elements:'+response.join()
-          fetch(`${process.env.API_URL}/converttoaudio`, {
+          fetch("https://stormy-refuge-59928.herokuapp.com/converttoaudio", {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -80,7 +80,7 @@ class App extends Component {
             this.setState({audioURL:mp3})
           })
           .then(
-            fetch(`${process.env.API_URL}/image`, {
+            fetch("https://stormy-refuge-59928.herokuapp.com/image", {
               method: 'put',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({

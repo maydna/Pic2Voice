@@ -32,7 +32,7 @@ class SignUp extends React.Component {
       } else if(this.state.name.length<1) {
         alert('Hey! Please enter a name')
       } else {
-        fetch(`${process.env.API_URL}/signup`,{
+        fetch("https://stormy-refuge-59928.herokuapp.com/signup",{
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body:JSON.stringify({
