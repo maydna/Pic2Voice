@@ -22,8 +22,6 @@ class SignUp extends React.Component {
 
     onNameChange = (event) => {
       this.setState({name: event.target.value})
-      fetch("https://"+window.location.hostname+"/api/")
-      .then(response => alert(response))
     }
 
     onSubmitSignUp = () => {
@@ -34,7 +32,7 @@ class SignUp extends React.Component {
       } else if(this.state.name.length<1) {
         alert('Hey! Please enter a name')
       } else {
-        fetch("https://"+window.location.hostname+"/api/signup",{
+        fetch(`${API_URL}/signup`,{
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body:JSON.stringify({

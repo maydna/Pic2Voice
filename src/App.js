@@ -55,7 +55,7 @@ class App extends Component {
     this.setState({imageURL: this.state.input });
     //add Image API
     if(this.state.input!=='')
-      {fetch("https://35.190.55.187/api/analyzeimage", {
+      {fetch(`${API_URL}/analyzeimage`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -68,7 +68,7 @@ class App extends Component {
           console.log("testing")
           this.setState({keywords:response})
           const audioMsg='This image may contain the following elements:'+response.join()
-          fetch("https://35.190.55.187/api/converttoaudio", {
+          fetch(`${API_URL}/converttoaudio`, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -80,7 +80,7 @@ class App extends Component {
             this.setState({audioURL:mp3})
           })
           .then(
-            fetch("https://35.190.55.187/api/image", {
+            fetch(`${API_URL}/image`, {
               method: 'put',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
