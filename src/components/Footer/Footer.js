@@ -7,12 +7,10 @@ const Footer = () => {
       return (
         <div className='footer'>
           <p style={{fontSize:'10px'}}>Ver 1.0:
-            <div>
+            <br />
             - The voice message can only describe what elements are in the image.
-            </div>
-            <div>
+            <br />
             - Image uploading is not supported.
-            </div>
           </p>
           <div>
             <Label as='a' href='https://www.linkedin.com/in/mingwu-yang/'>

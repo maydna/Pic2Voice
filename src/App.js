@@ -27,6 +27,7 @@ const initialState = {
     password:'',
     entries:0,
     joined:'',
+    isLoading: false
   }
 }
 
@@ -53,7 +54,7 @@ class App extends Component {
 
   onSubmit = () => {
     this.setState({imageURL: this.state.input });
-    //add Image API
+    this.setState({isLoading: true });
     if(this.state.input!=='')
       {fetch("https://stormy-refuge-59928.herokuapp.com/analyzeimage", {
         method: 'post',
@@ -65,7 +66,6 @@ class App extends Component {
       .then(response => response.json())
       .then(response => {
         if (response!=="Error happened when calling the analyzeImage API") {
-          console.log("testing")
           this.setState({keywords:response})
           const audioMsg='This image may contain the following elements:'+response.join()
           fetch("https://stormy-refuge-59928.herokuapp.com/converttoaudio", {
@@ -90,6 +90,7 @@ class App extends Component {
             .then(response => response.json())
             .then(count => {
               this.setState(Object.assign(this.state.user, { entries: count }))
+              this.setState({isLoading: false });
             })
             .catch(console.log)
           )
@@ -137,6 +138,7 @@ class App extends Component {
                   className='WordDisplay'
                   imageURL={this.state.imageURL}
                   keywords={this.state.keywords}
+                  isLoading={this.state.isLoading}                  
                 />
                 <VoiceDisplay
                   className='VoiceDisplay'
